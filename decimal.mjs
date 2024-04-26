@@ -6,6 +6,17 @@
  *  MIT Licence
  */
 
+class BusinessError extends Error {
+  constructor(message, code) {
+    super(message);
+    this.name = 'BusinessError';
+    this.code = code;
+  }
+}
+const RANGE_ERROR_CODE = 10200001;
+const TYPE_ERROR_CODE = 401;
+const PRECISION_LIMIT_EXCEEDED_ERROR_CODE = 10200030;
+const CRYPTO_UNAVAILABLE_ERROR_CODE = 10200031;
 
 // -----------------------------------  EDITABLE DEFAULTS  ------------------------------------ //
 
@@ -97,10 +108,6 @@ var EXP_LIMIT = 9e15,                      // 0 to 9e15
   inexact, quadrant,
   external = true,
 
-  decimalError = '[DecimalError] ',
-  invalidArgument = decimalError + 'Invalid argument: ',
-  precisionLimitExceeded = decimalError + 'Precision limit exceeded',
-  cryptoUnavailable = decimalError + 'crypto unavailable',
   tag = '[object Decimal]',
 
   mathfloor = Math.floor,
@@ -1644,7 +1651,8 @@ P.precision = P.sd = function (z) {
   var k,
     x = this;
 
-  if (z !== void 0 && z !== !!z && z !== 1 && z !== 0) throw Error(invalidArgument + z);
+  if (z !== void 0 && z !== !!z && z !== 1 && z !== 0) throw new BusinessError(
+    `The value of min is out of range. It must be 0 or 1. Received value is: ${z}`, RANGE_ERROR_CODE);
 
   if (x.d) {
     k = getPrecision(x.d);
@@ -2075,7 +2083,8 @@ P.toFraction = function (maxD) {
     maxD = e > 0 ? d : n1;
   } else {
     n = new Ctor(maxD);
-    if (!n.isInt() || n.lt(n1)) throw Error(invalidArgument + n);
+    if (!n.isInt() || n.lt(n1)) throw new BusinessError(
+      `The type of "Ctor(maxD)" must be Integer. Received value is: ${n}`, TYPE_ERROR_CODE);
     maxD = n.gt(d) ? (e > 0 ? d : n1) : n;
   }
 
@@ -2545,7 +2554,8 @@ function digitsToString(d) {
 
 function checkInt32(i, min, max) {
   if (i !== ~~i || i < min || i > max) {
-    throw Error(invalidArgument + i);
+    throw new BusinessError(
+      `The value of "${i}" is out of range. It must be >= ${min} && <= ${max} . Received value is: ${i}`, RANGE_ERROR_CODE);
   }
 }
 
@@ -3155,14 +3165,16 @@ function getLn10(Ctor, sd, pr) {
     // Reset global state in case the exception is caught.
     external = true;
     if (pr) Ctor.precision = pr;
-    throw Error(precisionLimitExceeded);
+    throw new BusinessError(
+      `Precision limit exceeded, "sd" must be <= LN10_PRECISION`, PRECISION_LIMIT_EXCEEDED_ERROR_CODE);
   }
   return finalise(new Ctor(LN10), sd, 1, true);
 }
 
 
 function getPi(Ctor, sd, rm) {
-  if (sd > PI_PRECISION) throw Error(precisionLimitExceeded);
+  if (sd > PI_PRECISION) throw new BusinessError(
+    `Precision limit exceeded, "sd" must be <= PI_PRECISION`, PRECISION_LIMIT_EXCEEDED_ERROR_CODE);
   return finalise(new Ctor(PI), sd, rm, true);
 }
 
@@ -3613,7 +3625,8 @@ function parseOther(x, str) {
   } else if (isOctal.test(str))  {
     base = 8;
   } else {
-    throw Error(invalidArgument + str);
+    throw new BusinessError(
+      `The type of "test(str)" must be Hex/Binary/Octal. Received value is: ${str}`, TYPE_ERROR_CODE);
   }
 
   // Is there a binary exponent part?
@@ -4196,7 +4209,8 @@ function clamp(x, min, max) {
  *
  */
 function config(obj) {
-  if (!obj || typeof obj !== 'object') throw Error(decimalError + 'Object expected');
+  if (!obj || typeof obj !== 'object') throw new BusinessError(
+    `The type of "obj" must be object. Received value is: ${str}`, TYPE_ERROR_CODE);
   var i, p, v,
     useDefaults = obj.defaults === true,
     ps = [
@@ -4213,7 +4227,8 @@ function config(obj) {
     if (p = ps[i], useDefaults) this[p] = DEFAULTS[p];
     if ((v = obj[p]) !== void 0) {
       if (mathfloor(v) === v && v >= ps[i + 1] && v <= ps[i + 2]) this[p] = v;
-      else throw Error(invalidArgument + p + ': ' + v);
+      else throw new BusinessError(
+        `The value of "${ps[i]}" is out of range. It must be >= ${ps[i + 1]} && <= ${ps[i + 2]} . Received value is: ${v}`, RANGE_ERROR_CODE);
     }
   }
 
@@ -4225,13 +4240,13 @@ function config(obj) {
           (crypto.getRandomValues || crypto.randomBytes)) {
           this[p] = true;
         } else {
-          throw Error(cryptoUnavailable);
+          throw new BusinessError(`crypto unavailable`, CRYPTO_UNAVAILABLE_ERROR_CODE);
         }
       } else {
         this[p] = false;
       }
     } else {
-      throw Error(invalidArgument + p + ': ' + v);
+      throw new BusinessError(`The type of "crypto" must be Boolean. Received value is: ${v}`, TYPE_ERROR_CODE);
     }
   }
 
@@ -4366,7 +4381,7 @@ function clone(obj) {
       return parseDecimal(x, v.toString());
 
     } else if (t !== 'string') {
-      throw Error(invalidArgument + v);
+      throw new BusinessError(`The type of "index" must be String. Received value is: ${v}`, TYPE_ERROR_CODE);
     }
 
     // Minus sign?
@@ -4437,6 +4452,15 @@ function clone(obj) {
   Decimal.tan = tan;
   Decimal.tanh = tanh;          // ES6
   Decimal.trunc = trunc;        // ES6
+
+  Decimal.PRECISION = Decimal.precision;
+  Decimal.ROUNDING = Decimal.rounding;
+  Decimal.TOEXPNEG = Decimal.toExpNeg;
+  Decimal.TOEXPPOS = Decimal.toExpPos;
+  Decimal.MAXE = Decimal.maxE;
+  Decimal.MINE = Decimal.minE;
+  Decimal.MODULO = Decimal.modulo;
+  Decimal.TRUNC = Decimal.crypto;
 
   if (obj === void 0) obj = {};
   if (obj) {
@@ -4710,7 +4734,7 @@ function random(sd) {
 
     i = k / 4;
   } else {
-    throw Error(cryptoUnavailable);
+    throw new BusinessError(`crypto unavailable`, CRYPTO_UNAVAILABLE_ERROR_CODE);;
   }
 
   k = rd[--i];
