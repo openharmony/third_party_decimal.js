@@ -2,9 +2,9 @@
 
 decimal.js是JavaScript的一个高精度数学库，它具有以下特性
 
-- 可以进行128位的高精度计算和表示数据
+- 可以进行128位的高精度计算和数据表示
 
-- 简单但功能齐全的API
+- 简单且功能齐全的API
 
 - 复用了许多JavaScript的 `Number.prototype` 和 `Math` 对象的方法
 
@@ -18,7 +18,7 @@ decimal.js是JavaScript的一个高精度数学库，它具有以下特性
 
   
 
-OpenHarmony上引入decimal.js主要用于高精度数学库计算。
+OpenHarmony上引入decimal.js主要用于提供高精度浮点运算能力。
 
 ## 主要目录结构
 
@@ -32,7 +32,7 @@ README.md        #软件说明
 
 ## OpenHarmony如何集成decimal.js
 
-decimal.js被引入在OpenHarmony的third_party目录下，使用OpenHarmony中依赖部件的方式进行编译。
+decimal.js被引入在OpenHarmony的third_party目录下，通过OpenHarmony中部件依赖的方式进行编译。
 
 1. 主干代码下载
 
