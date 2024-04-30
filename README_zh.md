@@ -80,7 +80,7 @@ decimal.js被引入在OpenHarmony的third_party目录下，通过OpenHarmony中�
              .onClick(() => {
              	let a0 : Decimal = new Decimal(1.2345678912345678)  // 可以使用Decimal表示数值
                console.log("test Decimal :" + a0.toString());      // 可以通过toString获取Decimal表示的数值
-                                                                   // '1.23456789123456789'
+                                                                   // '1.2345678912345678'
                Decimal.set({ precision : 10 })                     // 可以通过Decimal.set设置精度等"global"配置
                let a1 : Decimal = new Decimal(a0)                  // 使用设置的set配置表示数值
                console.log("test Decimal set:" + a1.toString());   // '1.2345678912'
