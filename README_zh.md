@@ -78,8 +78,21 @@ decimal.js被引入在OpenHarmony的third_party目录下，通过OpenHarmony中�
              .fontSize(50)
              .fontWeight(FontWeight.Bold)
              .onClick(() => {
-             	let a0 : Decimal = Decimal.abs(-0.5);
-               console.log("test Decimal abs:"+a0.toString()); // '0.5'
+             	let a0 : Decimal = new Decimal(1.2345678912345678)  // 可以使用Decimal表示数值
+               console.log("test Decimal :" + a0.toString());      // 可以通过toString获取Decimal表示的数值
+                                                                   // '1.23456789123456789'
+               Decimal.set({ precision : 10 })                     // 可以通过Decimal.set设置精度等"global"配置
+               let a1 : Decimal = new Decimal(a0)                  // 使用设置的set配置表示数值
+               console.log("test Decimal set:" + a1.toString());   // '1.2345678912'
+
+               Decimal.set({ defaults : true })                    // 设置回默认值配置
+               let dCos = Decimal.cos(0.5)                         // 可以使用Decimal中的三角函数等数学方法输出高精度浮点数
+               console.log("test Decimal cos:" + dCos.toString()); // '0.87758256189037271612'
+               console.log("test Math cos:" + Math.cos(0.5));      // '0.8775825618903728'
+
+               let a2 = Decimal.add(0.1, 0.2)                      // 此外, Decimal可以解决一些低精度计算导致的bug
+               console.log("test Decimal cos:" + a2.toString());   // '0.3'
+               console.log("test Decimal cos:" + (0.1 + 0.2));     // '0.30000000000000004'
              })
          }
          .width('100%')
