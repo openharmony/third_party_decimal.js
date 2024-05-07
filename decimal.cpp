@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Huawei Device Co., Ltd.
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,7 @@ extern const char _binary_decimal_abc_end[];
 
 // Napi get mjs code function
 extern "C" __attribute__((visibility("default"))) 
-void NAPI_util_Decimal_GetMJSCode(const char **buf, int *buflen)
+void NAPI_arkts_Decimal_GetMJSCode(const char **buf, int *buflen)
 {
     if (buf != nullptr) {
         *buf = _binary_decimal_mjs_start;
@@ -34,7 +34,7 @@ void NAPI_util_Decimal_GetMJSCode(const char **buf, int *buflen)
 
 // Napi get abc code function
 extern "C" __attribute__((visibility("default"))) 
-void NAPI_util_Decimal_GetABCCode(const char **buf, int *buflen)
+void NAPI_arkts_Decimal_GetABCCode(const char **buf, int *buflen)
 {
     if (buf != nullptr) {
         *buf = _binary_decimal_abc_start;
@@ -49,7 +49,7 @@ void NAPI_util_Decimal_GetABCCode(const char **buf, int *buflen)
  */
 static napi_module DecimalModule = {
     .nm_filename = nullptr,
-    .nm_modname = "util.Decimal",
+    .nm_modname = "arkts.Decimal",
 };
 extern "C" __attribute__((constructor)) void DecimalRegisterModule(void)
 {
