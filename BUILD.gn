@@ -45,6 +45,7 @@ ohos_shared_library("decimal") {
     "napi:ace_napi",
   ]
 
+  relative_install_dir = "module/arkts"
   part_name = "decimal.js"
   subsystem_name = "thirdparty"
 }

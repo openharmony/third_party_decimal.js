@@ -232,7 +232,8 @@ P.clampedTo = P.clamp = function (min, max) {
   min = new Ctor(min);
   max = new Ctor(max);
   if (!min.s || !max.s) return new Ctor(NaN);
-  if (min.gt(max)) throw Error(invalidArgument + max);
+  if (min.gt(max)) throw new BusinessError(
+    `The value of min is out of range. It must be <= ${max}. Received value is: ${min}`, RANGE_ERROR_CODE);
   k = x.cmp(min);
   return k < 0 ? min : x.cmp(max) > 0 ? max : new Ctor(x);
 };
@@ -4452,15 +4453,6 @@ function clone(obj) {
   Decimal.tan = tan;
   Decimal.tanh = tanh;          // ES6
   Decimal.trunc = trunc;        // ES6
-
-  Decimal.PRECISION = Decimal.precision;
-  Decimal.ROUNDING = Decimal.rounding;
-  Decimal.TOEXPNEG = Decimal.toExpNeg;
-  Decimal.TOEXPPOS = Decimal.toExpPos;
-  Decimal.MAXE = Decimal.maxE;
-  Decimal.MINE = Decimal.minE;
-  Decimal.MODULO = Decimal.modulo;
-  Decimal.TRUNC = Decimal.crypto;
 
   if (obj === void 0) obj = {};
   if (obj) {
