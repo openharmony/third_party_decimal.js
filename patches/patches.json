@@ -3,6 +3,7 @@
         {
             "project":"commonlibrary_ets_utils",
             "path":"commonlibrary/ets_utils",
+            "patch_file":"commonlibrary.patch",
             "pr_url":"https://gitee.com/openharmony/commonlibrary_ets_utils/pulls/991"
         }
     ]
