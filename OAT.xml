@@ -39,6 +39,7 @@
                 <filteritem type="filename" name="README_zh.md"/>
                 <filteritem type="filename" name="decimal.js"/>
                 <filteritem type="filename" name="decimal.mjs"/>
+                <filteritem type="filename" name="decimal.cpp"/>
             </filefilter>
             <filefilter name="copyrightPolicyFilter" desc="Filters for copyright header policies">
                 <filteritem type="filename" name="decimal.js"/>
