@@ -1,5 +1,8 @@
 # decimal.js
 
+API官方文档：[https://mikemcl.github.io/decimal.js/](https://mikemcl.github.io/decimal.js/)
+版本：10.4.3
+
 decimal.js是JavaScript的一个高精度数学库，它具有以下特性
 
 - 可以进行128位的高精度计算和数据表示
@@ -78,12 +81,12 @@ decimal.js被引入在OpenHarmony的third_party目录下，通过OpenHarmony中�
              .fontSize(50)
              .fontWeight(FontWeight.Bold)
              .onClick(() => {
-             	let a0 : Decimal = new Decimal(1.2345678912345678)  // 可以使用Decimal表示数值
+               let a0 : Decimal = new Decimal(1.2345678912345678)  // 可以使用Decimal表示数值
                console.log("test Decimal :" + a0.toString());      // 可以通过toString获取Decimal表示的数值
                                                                    // '1.2345678912345678'
                Decimal.set({ precision : 10 })                     // 可以通过Decimal.set设置精度等"global"配置
-               let a1 : Decimal = new Decimal(a0)                  // 使用设置的set配置表示数值
-               console.log("test Decimal set:" + a1.toString());   // '1.2345678912'
+               let a1 : Decimal = a0.add(0.5)                      // 进行加法操作
+               console.log("test Decimal set:" + a1.toString());   // 当前全局精度为10，结果为'1.734567891'
 
                Decimal.set({ defaults : true })                    // 设置回默认值配置
                let dCos = Decimal.cos(0.5)                         // 可以使用Decimal中的三角函数等数学方法输出高精度浮点数
@@ -91,8 +94,8 @@ decimal.js被引入在OpenHarmony的third_party目录下，通过OpenHarmony中�
                console.log("test Math cos:" + Math.cos(0.5));      // '0.8775825618903728'
 
                let a2 = Decimal.add(0.1, 0.2)                      // 此外, Decimal可以解决一些低精度计算导致的bug
-               console.log("test Decimal cos:" + a2.toString());   // '0.3'
-               console.log("test Decimal cos:" + (0.1 + 0.2));     // '0.30000000000000004'
+               console.log("test Decimal add:" + a2.toString());   // '0.3'
+               console.log("test Decimal add:" + (0.1 + 0.2));     // '0.30000000000000004'
              })
          }
          .width('100%')
@@ -102,13 +105,6 @@ decimal.js被引入在OpenHarmony的third_party目录下，通过OpenHarmony中�
    }
    
    ```
-
-   
-
-## decimal.js官方文档
-
-API官方文档 [https://mikemcl.github.io/decimal.js/](https://mikemcl.github.io/decimal.js/)
-
 
 
 ## 许可证
