@@ -36,16 +36,14 @@ gen_js_obj("decimal_mjs") {
 ohos_shared_library("decimal") {
   sources = [ "decimal.cpp" ]
 
-  deps = [ 
+  deps = [
     ":decimal_abc",
-    ":decimal_mjs"
-  ]
-  
-  external_deps = [
-    "napi:ace_napi",
+    ":decimal_mjs",
   ]
 
-  relative_install_dir = "module/arkts"
+  external_deps = [ "napi:ace_napi" ]
+
+  relative_install_dir = "module/arkts/math"
   part_name = "decimal.js"
   subsystem_name = "thirdparty"
 }
