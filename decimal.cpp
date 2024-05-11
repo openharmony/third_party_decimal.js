@@ -15,7 +15,7 @@ extern const char _binary_decimal_abc_end[];
 
 // Napi get mjs code function
 extern "C" __attribute__((visibility("default"))) 
-void NAPI_arkts_Decimal_GetMJSCode(const char **buf, int *buflen)
+void NAPI_arkts_math_Decimal_GetMJSCode(const char **buf, int *buflen)
 {
     if (buf != nullptr) {
         *buf = _binary_decimal_mjs_start;
@@ -27,7 +27,7 @@ void NAPI_arkts_Decimal_GetMJSCode(const char **buf, int *buflen)
 
 // Napi get abc code function
 extern "C" __attribute__((visibility("default"))) 
-void NAPI_arkts_Decimal_GetABCCode(const char **buf, int *buflen)
+void NAPI_arkts_math_Decimal_GetABCCode(const char **buf, int *buflen)
 {
     if (buf != nullptr) {
         *buf = _binary_decimal_abc_start;
@@ -42,7 +42,7 @@ void NAPI_arkts_Decimal_GetABCCode(const char **buf, int *buflen)
  */
 static napi_module DecimalModule = {
     .nm_filename = nullptr,
-    .nm_modname = "arkts.Decimal",
+    .nm_modname = "arkts.math.Decimal",
 };
 extern "C" __attribute__((constructor)) void DecimalRegisterModule(void)
 {
