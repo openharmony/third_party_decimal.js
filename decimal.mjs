@@ -15,8 +15,8 @@ class BusinessError extends Error {
 }
 const RANGE_ERROR_CODE = 10200001;
 const TYPE_ERROR_CODE = 401;
-const PRECISION_LIMIT_EXCEEDED_ERROR_CODE = 10200030;
-const CRYPTO_UNAVAILABLE_ERROR_CODE = 10200031;
+const PRECISION_LIMIT_EXCEEDED_ERROR_CODE = 10200060;
+const CRYPTO_UNAVAILABLE_ERROR_CODE = 10200061;
 
 // -----------------------------------  EDITABLE DEFAULTS  ------------------------------------ //
 
@@ -53,12 +53,12 @@ var EXP_LIMIT = 9e15,                      // 0 to 9e15
     //
     // ROUND_UP         0 Away from zero.
     // ROUND_DOWN       1 Towards zero.
-    // ROUND_CEIL       2 Towards +Infinity.
+    // ROUND_CEILING       2 Towards +Infinity.
     // ROUND_FLOOR      3 Towards -Infinity.
     // ROUND_HALF_UP    4 Towards nearest neighbour. If equidistant, up.
     // ROUND_HALF_DOWN  5 Towards nearest neighbour. If equidistant, down.
     // ROUND_HALF_EVEN  6 Towards nearest neighbour. If equidistant, towards even neighbour.
-    // ROUND_HALF_CEIL  7 Towards nearest neighbour. If equidistant, towards +Infinity.
+    // ROUND_HALF_CEILING  7 Towards nearest neighbour. If equidistant, towards +Infinity.
     // ROUND_HALF_FLOOR 8 Towards nearest neighbour. If equidistant, towards -Infinity.
     //
     // E.g.
@@ -74,7 +74,7 @@ var EXP_LIMIT = 9e15,                      // 0 to 9e15
     // DOWN       1 The remainder has the same sign as the dividend (JavaScript %).
     // FLOOR      3 The remainder has the same sign as the divisor (Python %).
     // HALF_EVEN  6 The IEEE 754 remainder function.
-    // EUCLID     9 Euclidian division. q = sign(n) * floor(a / abs(n)). Always positive.
+    // EUCLIDEAN     9 Euclidian division. q = sign(n) * floor(a / abs(n)). Always positive.
     //
     // Truncated division (1), floored division (3), the IEEE 754 remainder (6), and Euclidian
     // division (9) are commonly used for the modulus operation. The other rounding modes can also
@@ -170,7 +170,7 @@ var EXP_LIMIT = 9e15,                      // 0 to 9e15
  *  modulo                    mod
  *  naturalExponential        exp
  *  naturalLogarithm          ln
- *  negated                   neg
+ *  negate                    neg
  *  plus                      add
  *  precision                 sd
  *  round
@@ -1190,9 +1190,9 @@ P.logarithm = P.log = function (base) {
   //
   // Example of a result that will be incorrectly rounded:
   // log[1048576](4503599627370502) = 2.60000000000000009610279511444746...
-  // The above result correctly rounded using ROUND_CEIL to 1 decimal place should be 2.7, but it
+  // The above result correctly rounded using ROUND_CEILING to 1 decimal place should be 2.7, but it
   // will be given as 2.6 as there are 15 zeros immediately after the requested decimal place, so
-  // the exact result would be assumed to be 2.6, which rounded using ROUND_CEIL to 1 decimal
+  // the exact result would be assumed to be 2.6, which rounded using ROUND_CEILING to 1 decimal
   // place is still 2.6.
   if (checkRoundingDigits(r.d, k = pr, rm)) {
 
@@ -1501,7 +1501,7 @@ P.naturalLogarithm = P.ln = function () {
  * -1.
  *
  */
-P.negated = P.neg = function () {
+P.negate = P.neg = function () {
   var x = new this.constructor(this);
   x.s = -x.s;
   return finalise(x);
@@ -1653,7 +1653,7 @@ P.precision = P.sd = function (z) {
     x = this;
 
   if (z !== void 0 && z !== !!z && z !== 1 && z !== 0) throw new BusinessError(
-    `The value of min is out of range. It must be 0 or 1. Received value is: ${z}`, RANGE_ERROR_CODE);
+    `The value of includeZeros is out of range. It must be 0 or 1. Received value is: ${z}`, RANGE_ERROR_CODE);
 
   if (x.d) {
     k = getPrecision(x.d);
@@ -2491,7 +2491,7 @@ P.valueOf = P.toJSON = function () {
  *                           taylorSeries, atan2, parseOther
  *  finalise                 P.absoluteValue, P.atan, P.atanh, P.ceil, P.cos, P.cosh,
  *                           P.cubeRoot, P.dividedToIntegerBy, P.floor, P.logarithm, P.minus,
- *                           P.modulo, P.negated, P.plus, P.round, P.sin, P.sinh, P.squareRoot,
+ *                           P.modulo, P.negate, P.plus, P.round, P.sin, P.sinh, P.squareRoot,
  *                           P.tan, P.times, P.toDecimalPlaces, P.toExponential, P.toFixed,
  *                           P.toNearest, P.toPower, P.toPrecision, P.toSignificantDigits,
  *                           P.truncated, divide, getLn10, getPi, naturalExponential,
@@ -4168,7 +4168,7 @@ function cbrt(x) {
 
 
 /*
- * Return a new Decimal whose value is `x` rounded to an integer using `ROUND_CEIL`.
+ * Return a new Decimal whose value is `x` rounded to an integer using `ROUND_CEILING`.
  *
  * x {number|string|Decimal}
  *
@@ -4241,7 +4241,7 @@ function config(obj) {
           (crypto.getRandomValues || crypto.randomBytes)) {
           this[p] = true;
         } else {
-          throw new BusinessError(`crypto unavailable`, CRYPTO_UNAVAILABLE_ERROR_CODE);
+          throw new BusinessError(`Crypto unavailable`, CRYPTO_UNAVAILABLE_ERROR_CODE);
         }
       } else {
         this[p] = false;
@@ -4402,14 +4402,14 @@ function clone(obj) {
 
   Decimal.ROUND_UP = 0;
   Decimal.ROUND_DOWN = 1;
-  Decimal.ROUND_CEIL = 2;
+  Decimal.ROUND_CEILING = 2;
   Decimal.ROUND_FLOOR = 3;
   Decimal.ROUND_HALF_UP = 4;
   Decimal.ROUND_HALF_DOWN = 5;
   Decimal.ROUND_HALF_EVEN = 6;
-  Decimal.ROUND_HALF_CEIL = 7;
+  Decimal.ROUND_HALF_CEILING = 7;
   Decimal.ROUND_HALF_FLOOR = 8;
-  Decimal.EUCLID = 9;
+  Decimal.EUCLIDEAN = 9;
 
   Decimal.config = Decimal.set = config;
   Decimal.clone = clone;
@@ -4726,7 +4726,7 @@ function random(sd) {
 
     i = k / 4;
   } else {
-    throw new BusinessError(`crypto unavailable`, CRYPTO_UNAVAILABLE_ERROR_CODE);;
+    throw new BusinessError(`Crypto unavailable`, CRYPTO_UNAVAILABLE_ERROR_CODE);;
   }
 
   k = rd[--i];
@@ -4768,7 +4768,7 @@ function random(sd) {
 /*
  * Return a new Decimal whose value is `x` rounded to an integer using rounding mode `rounding`.
  *
- * To emulate `Math.round`, set rounding to 7 (ROUND_HALF_CEIL).
+ * To emulate `Math.round`, set rounding to 7 (ROUND_HALF_CEILING).
  *
  * x {number|string|Decimal}
  *
