@@ -43,6 +43,7 @@ ohos_shared_library("decimal") {
 
   external_deps = [ "napi:ace_napi" ]
 
+  license_file = "./LICENCE.md"
   relative_install_dir = "module/arkts/math"
   part_name = "decimal.js"
   subsystem_name = "thirdparty"
