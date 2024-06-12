@@ -2,7 +2,7 @@
     {
         "Name":"decimal.js",
         "License":"MIT",
-        "License File":"LICENSE.md",
+        "License File":"LICENCE.md",
         "Version Number":"10.4.3",
         "Owner":"gongjunsong@huawei.com",
         "Upstream URL":"https://github.com/MikeMcl/decimal.js.git",
