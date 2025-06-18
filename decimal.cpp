@@ -1,5 +1,5 @@
 /*!
- *  decimal.js v10.4.3
+ *  decimal.js v10.5.0
  *  An arbitrary-precision Decimal type for JavaScript.
  *  https://github.com/MikeMcl/decimal.js
  *  Copyright (c) 2024 Huawei Device Co., Ltd.
