@@ -1,4 +1,4 @@
-#### 10.4.3
+#### 10.5.0
 * 04/12/2022
 * #211 Remove `toStringTag` declaration for type compatibility.
 
