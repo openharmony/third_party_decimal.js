@@ -1,7 +1,7 @@
 # decimal.js
 
 API官方文档：[https://mikemcl.github.io/decimal.js/](https://mikemcl.github.io/decimal.js/)
-版本：10.4.3
+版本：10.5.0
 
 decimal.js是JavaScript的一个高精度数学库，它具有以下特性
 
