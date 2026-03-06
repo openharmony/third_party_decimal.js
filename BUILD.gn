@@ -13,6 +13,7 @@
 
 import("//build/config/components/ets_frontend/es2abc_config.gni")
 import("//build/ohos.gni")
+import("//build/config/clang/clang.gni")
 
 es2abc_gen_abc("gen_decimal_abc") {
   src_js = rebase_path("decimal.mjs")
@@ -47,4 +48,16 @@ ohos_shared_library("decimal") {
   relative_install_dir = "module/arkts/math"
   part_name = "decimal.js"
   subsystem_name = "thirdparty"
+}
+
+is_ohos_standard_system = is_standard_system && !is_arkui_x
+if (is_ohos_standard_system && product_name == "ohos-sdk") {
+  ohos_copy("copy_previewer_debug_arkts") {
+    public_deps = [ ":gen_decimal_abc" ]
+    abc_out_dir = get_label_info(":gen_decimal_abc", "target_out_dir")
+    sources = [ "${abc_out_dir}/decimal.abc" ]
+    outputs = [ target_out_dir + "/previewer/common/bin/module/arkts/math/{{source_file_part}}" ]
+    module_source_dir = target_out_dir + "/previewer/common/bin/module/arkts/math/"
+    module_install_name = ""
+  }
 }
