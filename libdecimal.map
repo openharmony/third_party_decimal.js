@@ -15,7 +15,6 @@
     global:
         extern "C" {
             NAPI_arkts_math_Decimal_GetABCCode;
-            NAPI_arkts_math_Decimal_GetMJSCode;
         };
     local:
         *;
